@@ -27,7 +27,7 @@ public class FlightController {
 
     // Buscar vuelo por ID
     @GetMapping("/{id}")
-    public ResponseEntity<Flight> getFlightById(@PathVariable Long id) {
+    public ResponseEntity<FlightDto> getFlightById(@PathVariable Long id) {
         return new ResponseEntity<>(flightService.findById(id), HttpStatus.OK);
     }
 

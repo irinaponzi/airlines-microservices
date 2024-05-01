@@ -25,8 +25,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.anyDouble;
-import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -109,15 +108,19 @@ public class FlightServiceTest {
     @Test
     void findByIdTest() {
         Long id = 1L;
-        Flight flightExpected = flightList.get(0);
+        Flight flightReturned = flightList.get(0);
+        FlightDto flightDtoExpected = flightDtoList.get(0);
 
-        when(mockedFlightRepository.findById(id)).thenReturn(Optional.of(flightExpected));
-        Flight flightActual = flightService.findById(id);
+        when(mockedFlightRepository.findById(id)).thenReturn(Optional.of(flightReturned));
+        when(mockedUtils.fetchDollarCard()).thenReturn(mockedDollar);
+        when(mockedUtils.flightMapper(any(Flight.class), anyDouble())).thenReturn(flightDtoExpected);
 
-        assertEquals(flightExpected.getId(), flightActual.getId());
-        assertEquals(flightExpected.getOrigin(), flightActual.getOrigin());
-        assertEquals(flightExpected.getDestiny(), flightActual.getDestiny());
-        assertEquals(flightExpected.getPrice(), flightActual.getPrice());
+        FlightDto flightDtoActual = flightService.findById(id);
+
+        assertEquals(flightDtoExpected.getOrigin(), flightDtoActual.getOrigin());
+        assertEquals(flightDtoExpected.getId(), flightDtoActual.getId());
+        assertEquals(flightDtoExpected.getDestiny(), flightDtoActual.getDestiny());
+        assertEquals(flightDtoExpected.getConvertedPrice(), flightDtoActual.getConvertedPrice());
     }
 
     @Test

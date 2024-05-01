@@ -3,7 +3,7 @@ spring:
     name: flights-api
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/flightsDB
+    url: jdbc:mysql://localhost:3306/airlinesDB
     username: root
     password: root
   jpa:

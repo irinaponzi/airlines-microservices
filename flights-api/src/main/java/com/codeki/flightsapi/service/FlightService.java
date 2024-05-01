@@ -32,10 +32,10 @@ public class FlightService {
     }
 
     // Busca un vuelo por su ID y lo retorna. Si no lo encuentra devuelve una excepción
-    public Flight findById(Long id) {
+    public FlightDto findById(Long id) {
         Optional<Flight> flightOptional = flightRepository.findById(id);
         if (flightOptional.isPresent()) {
-            return flightOptional.get();
+            return utils.flightMapper(flightOptional.get(), getDollarCart());
         }
         throw new NotFoundException("Flight not found");
     }
