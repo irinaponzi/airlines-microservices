@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @Setter
 public class FlightDto {
 
+    private Long id;
     private String origin;
     private String destiny;
     private LocalDateTime departureTime;

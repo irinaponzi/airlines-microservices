@@ -1,6 +1,6 @@
 package com.codeki.tickets.controller;
 
-import com.codeki.tickets.models.Flight;
+import com.codeki.tickets.dto.FlightDto;
 import com.codeki.tickets.service.FlightClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,12 +17,12 @@ public class FlightController {
     FlightClient flightClient;
 
     @GetMapping("/flights")
-    public ResponseEntity<List<Flight>> getAllFlights() {
+    public ResponseEntity<List<FlightDto>> getAllFlights() {
         return flightClient.getAllFlights();
     }
 
     @GetMapping("/flights/{id}")
-    public ResponseEntity<Flight> getFlightById(@PathVariable Long id) {
+    public ResponseEntity<FlightDto> getFlightById(@PathVariable Long id) {
         return flightClient.getFlightById(id);
     }
 

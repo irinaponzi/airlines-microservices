@@ -19,22 +19,13 @@ public class Ticket {
     private String passengerName;
     private String passengerEmail;
     private String passengerPassport;
-    @OneToOne (cascade = CascadeType.ALL)
-    @JoinColumn(name= "id_flight")
-    private Flight flight;
+    private Long idFlight;
 
     // Constructor sin ID
-    public Ticket(String passengerName, String passengerEmail, String passengerPassport, Flight flight) {
+    public Ticket(String passengerName, String passengerEmail, String passengerPassport, Long idFlight) {
         this.passengerName = passengerName;
         this.passengerEmail = passengerEmail;
         this.passengerPassport = passengerPassport;
-        this.flight = flight;
-    }
-
-    public Ticket(String passengerName, String passengerEmail, String passengerPassport) {
-        this.passengerName = passengerName;
-        this.passengerEmail = passengerEmail;
-        this.passengerPassport = passengerPassport;
-
+        this.idFlight = idFlight;
     }
 }

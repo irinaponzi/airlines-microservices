@@ -9,11 +9,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class CompanyDto {
+public class ResponseDto {
 
-    private Long id;
-    private String name;
-    private String page;
-    private String banner;
+    // ResponseDto se utiliza para mensajes simples de respuesta, que dan alguna información en un String
+    private String message;
 
 }
