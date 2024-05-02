@@ -2,7 +2,7 @@ package com.codeki.tickets.Utils;
 
 import com.codeki.tickets.dto.FlightDto;
 import com.codeki.tickets.models.Ticket;
-import com.codeki.tickets.service.FlightClient;
+import com.codeki.tickets.service.FlightFeignClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,10 +15,10 @@ import java.util.stream.Collectors;
 public class Utils {
 
     @Autowired
-    FlightClient flightClient;
+    FlightFeignClient flightFeignClient;
 
     public Map<String, Object> getCompleteTicket(Ticket ticket) {
-        FlightDto flightDto = flightClient.getFlightById(ticket.getIdFlight()).getBody();
+        FlightDto flightDto = flightFeignClient.getFlightById(ticket.getIdFlight()).getBody();
 
         Map<String, Object> completeTicket = new HashMap<>();
         completeTicket.put("Ticket", ticket);

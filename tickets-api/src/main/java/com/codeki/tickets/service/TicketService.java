@@ -19,7 +19,7 @@ public class TicketService {
     @Autowired
     TicketRepository ticketRepository;
     @Autowired
-    FlightClient flightClient;
+    FlightFeignClient flightFeignClient;
     @Autowired
     Utils utils;
 
@@ -45,7 +45,7 @@ public class TicketService {
 
     public Ticket createTicket(Long idFlight, Ticket newTicket) {
         try {
-            flightClient.getFlightById(idFlight);
+            flightFeignClient.getFlightById(idFlight);
             newTicket.setIdFlight(idFlight);
             return ticketRepository.save(newTicket);
         } catch (FeignException.NotFound exception) {
