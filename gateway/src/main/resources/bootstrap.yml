@@ -1,0 +1,12 @@
+#spring:
+ # application:
+  #  name: gateway
+  #cloud:
+   # config:
+    #  uri: http://localhost:8090
+
+spring:
+  cloud:
+    gateway:
+      
+

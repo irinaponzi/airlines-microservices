@@ -3,9 +3,8 @@ spring:
     name: tickets-api
   cloud:
     config:
-      discovery:
-        enabled: true
-        uri: http://localhost:8081
+      enabled: true
+      uri: http://localhost:8090
 
 
 

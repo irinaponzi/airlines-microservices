@@ -3,9 +3,9 @@ spring:
     name: flights-api
   cloud:
     config:
+      enabled: true
       uri: http://localhost:8090
-  discovery:
-    client:
-      serviceUrl:
-        defaultZone: http://localhost:8761/eureka
+
+
+
 
