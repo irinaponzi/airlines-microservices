@@ -22,6 +22,9 @@ spring:
            uri: lb://tickets-api
            predicates:
              - Path=/tickets/**
+    loadbalancer:
+      ribbon:
+        enabled: false
 management:
   endpoints:
     web:
