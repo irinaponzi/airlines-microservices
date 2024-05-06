@@ -11,6 +11,9 @@ eureka:
 
 spring:
   cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false
     gateway:
       routes:
          - id: flights-api
@@ -22,9 +25,6 @@ spring:
            uri: lb://tickets-api
            predicates:
              - Path=/tickets/**
-    loadbalancer:
-      ribbon:
-        enabled: false
 management:
   endpoints:
     web:
