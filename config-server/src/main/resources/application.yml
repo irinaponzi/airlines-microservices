@@ -1,12 +1,14 @@
+server:
+  port: 8090
 spring:
   cloud:
     config:
       server:
         git:
           default-label: main
-          uri: https://github.com/irinaponzi/airlines-microservices
+          uri: https://github.com/irinaponzi/airlines-microservices.git
           search-paths: config-data
+          clone-on-start: true
+
   application:
     name: config-server
-server:
-  port: 8000

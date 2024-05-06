@@ -25,3 +25,6 @@ eureka:
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
     preferIpAddress: true
 
+dollar:
+  card-url: ${DOLLAR_API_URL:https://dolarapi.com/v1/dolares/tarjeta}
+
