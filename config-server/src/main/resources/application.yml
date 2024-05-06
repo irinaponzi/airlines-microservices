@@ -7,6 +7,6 @@ spring:
           uri: https://github.com/irinaponzi/airlines-microservices
           search-paths: config-data
   application:
-    name: config-service
+    name: config-server
 server:
-  port: 8081
+  port: 8000
