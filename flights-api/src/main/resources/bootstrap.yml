@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: flights-api
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        uri: http://localhost:8081
+
+dollar:
+  card-url: ${DOLLAR_API_URL:https://dolarapi.com/v1/dolares/tarjeta}
