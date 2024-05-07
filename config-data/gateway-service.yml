@@ -17,11 +17,11 @@ spring:
           uri: lb://FLIGHTS-API
           predicates:
             - Path=/flights/**
-            - Path=/companies/**
-        - id: tickets-api
-          uri: lb://TICKETS-API
-          predicates:
-            - Path=/tickets/**
+ #           - Path=/companies/**
+  #      - id: tickets-api
+   #       uri: lb://TICKETS-API
+    #      predicates:
+     #       - Path=/tickets/**
 
 
 
