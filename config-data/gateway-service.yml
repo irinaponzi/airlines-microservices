@@ -6,20 +6,24 @@ eureka:
     fetchRegistry: true
     serviceUrl:
       defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
+  instance:
+    hostname: localhost
 
 spring:
   cloud:
     gateway:
-      routes:
-        - id: flights-api
-          uri: lb://flights-api
-          predicates:
-            - Path=/flights/**
-            - Path=/companies/**
-        - id: tickets-api
-          uri: lb://tickets-api
-          predicates:
-            - Path=/tickets/**
+      discovery:
+        locator:
+          enabled: true
+        routes:
+          - id: flights-api
+            uri: lb://flights-api
+            predicates:
+              - Path=/flights/**
+          - id: tickets-api
+            uri: lb://tickets-api
+            predicates:
+              - Path=/tickets/**
 
 
 
