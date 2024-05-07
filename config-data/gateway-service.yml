@@ -29,12 +29,8 @@ spring:
 management:
   endpoints:
     web:
-      base-path: /admin
-  endpoint:
-    health:
-      show-details: always
-    info:
-      enabled: true
+      exposure:
+        include: "*"
 
 
 
