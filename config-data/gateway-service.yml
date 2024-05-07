@@ -12,18 +12,16 @@ eureka:
 spring:
   cloud:
     gateway:
-      discovery:
-        locator:
-          enabled: true
-        routes:
-          - id: flights-api
-            uri: lb://flights-api
-            predicates:
-              - Path=/flights/**
-          - id: tickets-api
-            uri: lb://tickets-api
-            predicates:
-              - Path=/tickets/**
+      routes:
+        - id: flights-api
+          uri: lb://flights-api
+          predicates:
+            - Path=/flights/**
+            - Path=/companies/**
+        - id: tickets-api
+          uri: lb://tickets-api
+          predicates:
+            - Path=/tickets/**
 
 
 
