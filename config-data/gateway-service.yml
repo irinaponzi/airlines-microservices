@@ -13,18 +13,19 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: flights-api
+        - id: flights-api-route
           uri: lb://FLIGHTS-API
           predicates:
             - Path=/flights/**
-        - id: companies-api
+        - id: companies-api-route
           uri: lb://FLIGHTS-API
           predicates:
             - Path=/companies/**
-        - id: tickets-api
+        - id: tickets-api-route
           uri: lb://TICKETS-API
           predicates:
             - Path=/tickets/**
+
 
 
 
