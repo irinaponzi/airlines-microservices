@@ -13,10 +13,16 @@ spring:
   cloud:
     gateway:
       routes:
+        - id: auth-service-route
+          uri: lb://AUTH-SERVICE
+          predicates:
+            - Path=/auth/**
         - id: flights-api-route
           uri: lb://FLIGHTS-API
           predicates:
             - Path=/flights/**
+          filters:
+            - AuthFilter
         - id: companies-api-route
           uri: lb://FLIGHTS-API
           predicates:
@@ -26,11 +32,6 @@ spring:
           predicates:
             - Path=/tickets/**
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
 
 
 
