@@ -17,10 +17,6 @@ spring:
           uri: lb://AUTH-SERVICE
           predicates:
             - Path=/auth/**
-        - id: roles-service-route
-          uri: lb://AUTH-SERVICE
-          predicates:
-            - Path=/roles/**
         - id: flights-api-route
           uri: lb://FLIGHTS-API
           predicates:
@@ -31,14 +27,10 @@ spring:
           uri: lb://FLIGHTS-API
           predicates:
             - Path=/companies/**
-          filters:
-            - AuthFilter
         - id: tickets-api-route
           uri: lb://TICKETS-API
           predicates:
             - Path=/tickets/**
-          filters:
-            - AuthFilter
 
 
 
