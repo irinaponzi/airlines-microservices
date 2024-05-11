@@ -4,6 +4,7 @@ import com.codeki.authservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -33,6 +34,15 @@ public class SecurityConfig {
                         .requestMatchers("/roles/admin/**").hasAnyAuthority("ADMIN")
                         .requestMatchers("/roles/user/**").hasAnyAuthority("USER")
                         .requestMatchers("/roles/adminuser/**").hasAnyAuthority("ADMIN", "USER")
+                        .requestMatchers(HttpMethod.GET, "/flights/**").hasAnyAuthority("ADMIN", "USER")
+                        .requestMatchers(HttpMethod.POST, "/flights/**").hasAnyAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/flights/**").hasAnyAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/flights/**").hasAnyAuthority("ADMIN")
+                        .requestMatchers("/companies/**").hasAnyAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/tickets/**").hasAnyAuthority("ADMIN", "USER")
+                        .requestMatchers(HttpMethod.POST, "/tickets/**").hasAnyAuthority("USER")
+                        .requestMatchers(HttpMethod.PUT, "/tickets/**").hasAnyAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/tickets/**").hasAnyAuthority("ADMIN")
                         .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider()).addFilterBefore(
