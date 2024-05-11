@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: tickets-api
+  cloud:
+    config:
+      enabled: true
+      uri: http://localhost:8081
+
+
+

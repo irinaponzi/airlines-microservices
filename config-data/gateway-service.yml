@@ -1,0 +1,52 @@
+server:
+  port: 8080
+eureka:
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
+  instance:
+    hostname: localhost
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: auth-service-route
+          uri: lb://AUTH-SERVICE
+          predicates:
+            - Path=/auth/**
+        - id: roles-service-route
+          uri: lb://AUTH-SERVICE
+          predicates:
+            - Path=/roles/**
+        - id: flights-api-route
+          uri: lb://FLIGHTS-API
+          predicates:
+            - Path=/flights/**
+          filters:
+            - AuthFilter
+        - id: companies-api-route
+          uri: lb://FLIGHTS-API
+          predicates:
+            - Path=/companies/**
+          filters:
+            - AuthFilter
+        - id: tickets-api-route
+          uri: lb://TICKETS-API
+          predicates:
+            - Path=/tickets/**
+          filters:
+            - AuthFilter
+
+
+
+
+
+
+
+
+
+
+
