@@ -81,4 +81,24 @@ public class AuthService {
         response.setStatusCode(200);
         return response;
     }
+
+    public ReqResponse verifyToken(String token) {
+        ReqResponse response = new ReqResponse();
+        try {
+            String email = jwtUtils.extractUserName(token);
+            User user = usersRepository.findByEmail(email).orElseThrow();
+
+            if (jwtUtils.validateToken(token, user)) {
+                response.setStatusCode(200);
+                response.setMessage("Token is valid");
+            } else {
+                response.setStatusCode(401); // Unauthorized
+                response.setMessage("Token is not valid");
+            }
+        } catch (Exception e) {
+            response.setStatusCode(500);
+            response.setError(e.getMessage());
+        }
+        return response;
+    }
 }

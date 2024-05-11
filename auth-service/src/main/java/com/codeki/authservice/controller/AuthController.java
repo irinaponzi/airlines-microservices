@@ -5,10 +5,7 @@ import com.codeki.authservice.service.AuthService;
 import com.codeki.authservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
@@ -32,5 +29,10 @@ public class AuthController {
     @PostMapping("/refresh")
     public ResponseEntity<ReqResponse> refreshToken(@RequestBody ReqResponse refreshTokenRequest) {
         return ResponseEntity.ok(authService.refreshToken(refreshTokenRequest));
+    }
+
+    @PostMapping("/verify")
+    public ResponseEntity<ReqResponse> verifyToken(@RequestParam String verifyTokenRequest) {
+        return ResponseEntity.ok(authService.verifyToken(verifyTokenRequest));
     }
 }
