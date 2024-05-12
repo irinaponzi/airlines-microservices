@@ -16,11 +16,21 @@ spring:
         - id: auth-service-route
           uri: lb://AUTH-SERVICE
           predicates:
-            - Path=/auth/**, /roles/**
+            - Path=/auth/**
+        - id: roles-service-route
+          uri: lb://AUTH-SERVICE
+          predicates:
+            - Path=/roles/**
         - id: flights-api-route
           uri: lb://FLIGHTS-API
           predicates:
-            - Path=/flights/**, /companies/**
+            - Path=/flights/**
+          filters:
+            - AuthFilter
+        - id: companies-api-route
+          uri: lb://FLIGHTS-API
+          predicates:
+            - Path=/companies/**
           filters:
             - AuthFilter
         - id: tickets-api-route
