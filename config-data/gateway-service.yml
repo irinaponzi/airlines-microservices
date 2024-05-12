@@ -25,14 +25,20 @@ spring:
           uri: lb://FLIGHTS-API
           predicates:
             - Path=/flights/**
+          filters:
+            - AuthFilter
         - id: companies-api-route
           uri: lb://FLIGHTS-API
           predicates:
             - Path=/companies/**
+          filters:
+            - AuthFilter
         - id: tickets-api-route
           uri: lb://TICKETS-API
           predicates:
             - Path=/tickets/**
+          filters:
+            - AuthFilter
 
 
 
