@@ -27,14 +27,12 @@ spring:
             - Path=/flights/**
           filters:
             - AuthFilter
-            - FlightFilter
         - id: companies-api-route
           uri: lb://FLIGHTS-API
           predicates:
             - Path=/companies/**
           filters:
             - AuthFilter
-            - FlightFilter
         - id: tickets-api-route
           uri: lb://TICKETS-API
           predicates:
