@@ -2,21 +2,22 @@ package com.codeki.authservice.Utils;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
-import java.util.Base64;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Component
 public class JwtUtils {
 
+    // ver de ponerla con un Value (el string)
     private SecretKey secretKey;
     private static final long EXPIRATION_TIME = 3600000;
 
@@ -35,22 +36,8 @@ public class JwtUtils {
                 .compact();
     }
 
-    public String generateRefreshToken(HashMap<String, Objects> claims, UserDetails userDetails) {
-        return Jwts.builder()
-                .claims(claims)
-                .subject(userDetails.getUsername())
-                .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(secretKey)
-                .compact();
-    }
-
     public String extractUserName(String token) {
         return extractClaims(token, Claims::getSubject);
-    }
-
-    private <T> T extractClaims(String token, Function<Claims, T> claimsFunction) {
-        return claimsFunction.apply(Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload());
     }
 
     public boolean validateToken(String token, UserDetails userDetails) {
@@ -61,4 +48,9 @@ public class JwtUtils {
     private boolean isTokenExpired(String token) {
         return extractClaims(token, Claims::getExpiration).before(new Date());
     }
+
+    private <T> T extractClaims(String token, Function<Claims, T> claimsFunction) {
+        return claimsFunction.apply(Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload());
+    }
+
 }

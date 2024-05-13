@@ -2,8 +2,8 @@ package com.codeki.authservice.controller;
 
 import com.codeki.authservice.dto.ReqResponse;
 import com.codeki.authservice.service.AuthService;
-import com.codeki.authservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,27 +12,20 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     @Autowired
-    UserService userService;
-    @Autowired
     private AuthService authService;
 
-    @PostMapping("/signup")
-    public ResponseEntity<ReqResponse> signUp(@RequestBody ReqResponse signUpRequest) {
-        return ResponseEntity.ok(authService.singUp(signUpRequest));
+    @PostMapping("/sign-up")
+    public ResponseEntity<ReqResponse> signUp(@RequestBody ReqResponse signUpReq) {
+        return new ResponseEntity<>(authService.singUp(signUpReq), HttpStatus.CREATED);
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<ReqResponse> logIn(@RequestBody ReqResponse logInRequest) {
-        return ResponseEntity.ok(authService.login(logInRequest));
+    @PostMapping("/log-in")
+    public ResponseEntity<ReqResponse> logIn(@RequestBody ReqResponse logInReq) {
+        return new ResponseEntity<>(authService.login(logInReq), HttpStatus.OK);
     }
 
-    @PostMapping("/refresh")
-    public ResponseEntity<ReqResponse> refreshToken(@RequestBody ReqResponse refreshTokenRequest) {
-        return ResponseEntity.ok(authService.refreshToken(refreshTokenRequest));
-    }
-
-    @PostMapping("/verify")
-    public ResponseEntity<ReqResponse> verifyToken(@RequestParam String verifyTokenRequest) {
-        return ResponseEntity.ok(authService.verifyToken(verifyTokenRequest));
+    @PostMapping("/validate-token")
+    public ResponseEntity<ReqResponse> validateToken(@RequestParam String validateTokenReq) {
+        return new ResponseEntity<>(authService.validateToken(validateTokenReq), HttpStatus.OK);
     }
 }

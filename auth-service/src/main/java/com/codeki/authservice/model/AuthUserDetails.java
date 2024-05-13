@@ -9,11 +9,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
+@Data
 @Entity
+@Table(name = "user")
 public class AuthUserDetails implements UserDetails {
 
     @Id
