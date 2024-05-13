@@ -1,7 +1,7 @@
 package com.codeki.authservice.configuration;
 
 import com.codeki.authservice.Utils.JwtUtils;
-import com.codeki.authservice.service.AuthUserService;
+import com.codeki.authservice.service.CustomUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,7 +23,7 @@ public class AuthFilter extends OncePerRequestFilter {
     @Autowired
     JwtUtils jwtUtils;
     @Autowired
-    AuthUserService authUserService;
+    CustomUserDetailsService customUserDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -40,7 +40,7 @@ public class AuthFilter extends OncePerRequestFilter {
         username = jwtUtils.extractUserName(jwtToken);
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = authUserService.loadUserByUsername(username);
+            UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
 
             if (jwtUtils.validateToken(jwtToken, userDetails)) {
                 SecurityContext securityContext = SecurityContextHolder.createEmptyContext();

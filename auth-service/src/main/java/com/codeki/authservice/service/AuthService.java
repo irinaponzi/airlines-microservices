@@ -2,8 +2,10 @@ package com.codeki.authservice.service;
 
 import com.codeki.authservice.Utils.JwtUtils;
 import com.codeki.authservice.dto.ReqResponse;
-import com.codeki.authservice.model.AuthUserDetails;
-import com.codeki.authservice.repository.AuthUserRepository;
+import com.codeki.authservice.model.CustomUserDetails;
+import com.codeki.authservice.model.User;
+import com.codeki.authservice.repository.CustomUserDetailsRepository;
+import com.codeki.authservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,7 +17,9 @@ import org.springframework.stereotype.Service;
 public class AuthService {
 
     @Autowired
-    AuthUserRepository authUserRepository;
+    CustomUserDetailsRepository customUserDetailsRepository;
+    @Autowired
+    UserRepository userRepository;
     @Autowired
     JwtUtils jwtUtils;
     @Autowired
@@ -28,13 +32,14 @@ public class AuthService {
         ReqResponse response = new ReqResponse();
 
         try {
-            AuthUserDetails authUser = new AuthUserDetails();
+            CustomUserDetails authUser = new CustomUserDetails();
             authUser.setUsername(registrationReq.getUsername());
             authUser.setEmail(registrationReq.getEmail());
             authUser.setPassword(passwordEncoder.encode(registrationReq.getPassword()));
             authUser.setRole(registrationReq.getRole());
 
-            authUserRepository.save(authUser);
+            customUserDetailsRepository.save(authUser);
+            createUser(registrationReq);
 
             response.setMessage("User has been registered successfully");
             response.setStatusCode(200);
@@ -46,13 +51,14 @@ public class AuthService {
         }
         return response;
     }  // hacer que chequee que el nombre de usuario es único
+    // ver el tema de manejar tuto con un mismo DTO
 
     public ReqResponse login(ReqResponse loginReq) {
         ReqResponse response = new ReqResponse();
 
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginReq.getUsername(), loginReq.getPassword()));
-            AuthUserDetails authUser = authUserRepository.findByUsername(loginReq.getUsername())
+            CustomUserDetails authUser = customUserDetailsRepository.findByUsername(loginReq.getUsername())
                     .orElseThrow(() -> new UsernameNotFoundException("Username not found")); // ver esta excepcion
 
             String TokenJwt = jwtUtils.generateToken(authUser);
@@ -75,7 +81,7 @@ public class AuthService {
 
         try {
             String userName = jwtUtils.extractUserName(token);
-            AuthUserDetails authUser = authUserRepository.findByUsername(userName)
+            CustomUserDetails authUser = customUserDetailsRepository.findByUsername(userName)
                     .orElseThrow(() -> new UsernameNotFoundException("Username not found")); // ver esta excepcion
 
             if (jwtUtils.validateToken(token, authUser)) {
@@ -92,6 +98,16 @@ public class AuthService {
             response.setError(e.getMessage());
         }
         return response;
+    }
+
+    private User createUser(ReqResponse registrationReq){
+        User user = new User();
+        user.setName(registrationReq.getName());
+        user.setLastName(registrationReq.getLastName());
+        user.setPassport(registrationReq.getPassport());
+        user.setDni(registrationReq.getDni());
+
+        return userRepository.save(user);
     }
 
     // Falta Log out.

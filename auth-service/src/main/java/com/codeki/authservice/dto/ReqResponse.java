@@ -13,6 +13,12 @@ public class ReqResponse {
     private String password;
     private String email;
     private String role;
+
+    private String name;
+    private String lastName;
+    private String passport;
+    private String dni;
+
     private String message;
     private int statusCode;
     private String token;
