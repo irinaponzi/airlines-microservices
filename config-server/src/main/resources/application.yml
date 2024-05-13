@@ -8,7 +8,6 @@ spring:
           default-label: main
           uri: https://github.com/irinaponzi/airlines-microservices.git
           search-paths: config-data
-          #clone-on-start: true
 
   application:
     name: config-server
