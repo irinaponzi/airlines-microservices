@@ -1,6 +1,6 @@
 package com.codeki.authservice.service;
 
-import com.codeki.authservice.repository.AuthUserRepository;
+import com.codeki.authservice.repository.CustomUserDetailsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -8,14 +8,14 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AuthUserService implements UserDetailsService {
+public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
-    AuthUserRepository authUserRepository;
+    CustomUserDetailsRepository customUserDetailsRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return authUserRepository.findByUsername(username)
+        return customUserDetailsRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(username));
     }
 }

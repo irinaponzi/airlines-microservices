@@ -11,8 +11,8 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name = "user")
-public class AuthUserDetails implements UserDetails {
+@Table(name = "register_data")
+public class CustomUserDetails implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +21,9 @@ public class AuthUserDetails implements UserDetails {
     private String password;
     private String email;
     private String role;
+    @OneToOne
+    @JoinColumn(name= "user_id") // ver que solo desde aca se pueda crear el usuario
+    User user;
 
 
     @Override
