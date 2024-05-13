@@ -14,11 +14,11 @@ import reactor.core.publisher.Mono;
 @Component
 public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> {
 
-    private WebClient.Builder webClient;
+    private final WebClient.Builder WEB_CLIENT;
 
-    public AuthFilter(WebClient.Builder webClient) {
+    public AuthFilter(WebClient.Builder WEB_CLIENT) {
         super(Config.class);
-        this.webClient = webClient;
+        this.WEB_CLIENT = WEB_CLIENT;
     }
 
     @Override
@@ -28,21 +28,23 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
                 return onError(exchange, HttpStatus.UNAUTHORIZED);
             }
 
-            String tokenHeader = exchange.getRequest().getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
-            String [] chunks = tokenHeader.split(" ");
+            String authHeader = exchange.getRequest().getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
+            String [] chunks = authHeader.split(" ");
             if (chunks.length != 2 || !chunks[0].equals("Bearer")) {
                 return onError(exchange, HttpStatus.UNAUTHORIZED);
             }
 
-            return webClient.build()
+            return WEB_CLIENT.build()
                     .post()
-                    .uri("http://auth-service/auth/verify?verifyTokenRequest=" + chunks[1])
+                    .uri("http://auth-service/auth/validate-token?validateTokenReq=" + chunks[1])
                     .retrieve().bodyToMono(ReqResponse.class)
-                    .map(t -> {
-                        t.getToken();
+                    .map(reqResponse -> {
+                        exchange.getRequest()
+                                .mutate()
+                                .header("x-auth-token", String.valueOf(reqResponse.getToken()))
+                                .header("x-auth-user-name", String.valueOf(reqResponse.getUsername()));
                         return exchange;
-                    }).flatMap(chain::filter);
-
+                        }).flatMap(chain::filter);
         }));
     }
 
@@ -52,5 +54,7 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
         return response.setComplete();
     }
 
-    public static class Config{}
+    public static class Config {
+
+    }
 }
