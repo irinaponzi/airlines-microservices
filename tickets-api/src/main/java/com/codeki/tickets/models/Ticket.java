@@ -16,16 +16,12 @@ public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String passengerName;
-    private String passengerEmail;
-    private String passengerPassport;
+    private Long idUser;
     private Long idFlight;
 
     // Constructor sin ID
-    public Ticket(String passengerName, String passengerEmail, String passengerPassport, Long idFlight) {
-        this.passengerName = passengerName;
-        this.passengerEmail = passengerEmail;
-        this.passengerPassport = passengerPassport;
+    public Ticket(Long idUser, Long idFlight) {
+        this.idUser = idUser;
         this.idFlight = idFlight;
     }
 }

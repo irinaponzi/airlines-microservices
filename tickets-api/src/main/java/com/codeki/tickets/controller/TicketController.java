@@ -21,12 +21,7 @@ public class TicketController {
     @GetMapping("")
     public ResponseEntity<List<Map<String, Object>>> getAllTickets() {
         return new ResponseEntity<>(ticketService.findAll(), HttpStatus.OK);
-    }
-
-    @GetMapping("/passport")
-    public ResponseEntity<List<Map<String, Object>>> getTicketByPassport(@RequestParam String passport) {
-        return new ResponseEntity<>(ticketService.findByPassport(passport), HttpStatus.OK);
-    }
+    } // Buscar ticket por usuario?
 
     @GetMapping("/id-flight")
     public ResponseEntity<List<Ticket>> getTicketByIdFlight(@RequestParam Long idFlight) {
