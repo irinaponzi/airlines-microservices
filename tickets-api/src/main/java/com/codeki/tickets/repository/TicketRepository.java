@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface TicketRepository extends JpaRepository<Ticket, Long> {
 
-    List<Ticket> findByPassengerPassport(String passengerPassport);
     List<Ticket> findByIdFlight(Long flightId);
+    List<Ticket> findByIdUser(Long idUser);
 
 }

@@ -21,16 +21,21 @@ public class TicketController {
     @GetMapping("")
     public ResponseEntity<List<Map<String, Object>>> getAllTickets() {
         return new ResponseEntity<>(ticketService.findAll(), HttpStatus.OK);
-    } // Buscar ticket por usuario?
+    }
 
     @GetMapping("/id-flight")
     public ResponseEntity<List<Ticket>> getTicketByIdFlight(@RequestParam Long idFlight) {
         return new ResponseEntity<>(ticketService.findByIdFlight(idFlight), HttpStatus.OK);
     }
 
+    @GetMapping("/id-user")
+    public ResponseEntity<List<Ticket>> getTicketByIdUser(@RequestParam Long idUser) {
+        return new ResponseEntity<>(ticketService.findByIdUser(idUser), HttpStatus.OK);
+    }
+
     @PostMapping("/add")
-    public ResponseEntity<Ticket> addTicket(@RequestParam Long idFlight, @RequestBody Ticket newTicket) {
-        return new ResponseEntity<>(ticketService.createTicket(idFlight, newTicket), HttpStatus.CREATED);
+    public ResponseEntity<Ticket> addTicket(@RequestParam Long idUser, @RequestParam Long idFlight) {
+        return new ResponseEntity<>(ticketService.createTicket(idUser, idFlight), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/delete/{id}")

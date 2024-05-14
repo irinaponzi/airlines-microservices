@@ -9,6 +9,7 @@ import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -21,18 +22,12 @@ public class TicketService {
     @Autowired
     FlightFeignClient flightFeignClient;
     @Autowired
+    UserFeignClient userFeignClient;
+    @Autowired
     Utils utils;
 
     public List<Map<String, Object>> findAll() {
         return utils.getCompleteTicketList(ticketRepository.findAll());
-    }
-
-    public List<Map<String, Object>> findByPassport(String passport) {
-        List<Ticket> ticketList = ticketRepository.findByPassengerPassport(passport);
-        if (!ticketList.isEmpty()) {
-            return utils.getCompleteTicketList(ticketList);
-        }
-        throw new NotFoundException("No results found");
     }
 
     public List<Ticket> findByIdFlight(Long idFlight) {
@@ -43,13 +38,29 @@ public class TicketService {
         throw new NotFoundException("No results found");
     }
 
-    public Ticket createTicket(Long idFlight, Ticket newTicket) {
+    public List<Ticket> findByIdUser(Long idUser) {
+        List<Ticket> ticketList = ticketRepository.findByIdUser(idUser);
+        if (!ticketList.isEmpty()) {
+            return ticketList;
+        }
+        throw new NotFoundException("No results found");
+    }
+
+    public Ticket createTicket(Long idUser, Long idFlight) {
         try {
             flightFeignClient.getFlightById(idFlight);
+            userFeignClient.getUserById(idUser);
+
+            Ticket newTicket = new Ticket();
+            LocalDateTime purchaseDate = LocalDateTime.now();
+
+            newTicket.setPurchaseDate(purchaseDate);
             newTicket.setIdFlight(idFlight);
+            newTicket.setIdUser(idUser);
             return ticketRepository.save(newTicket);
+
         } catch (FeignException.NotFound exception) {
-            throw new NotFoundException("Unable to create: Flight not found");
+            throw new NotFoundException("Unable to create: Flight or User not found");
         }
     }
 
@@ -61,4 +72,5 @@ public class TicketService {
         }
         throw new NotFoundException("Unable to delete: Ticket not found");
     }
+
 }
