@@ -11,7 +11,7 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name = "register_data")
+@Table(name = "register")
 public class CustomUserDetails implements UserDetails {
 
     @Id
@@ -21,8 +21,8 @@ public class CustomUserDetails implements UserDetails {
     private String password;
     private String email;
     private String role;
-    @OneToOne
-    @JoinColumn(name= "user_id") // ver que solo desde aca se pueda crear el usuario
+    @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE })
+    @JoinColumn(name= "user_id", nullable = false)
     User user;
 
 

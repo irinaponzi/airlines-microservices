@@ -13,6 +13,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Autowired
     CustomUserDetailsRepository customUserDetailsRepository;
 
+    // Este servicio es usado en la configuración de seguridad (AuthFilter y SecurityConfig)
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return customUserDetailsRepository.findByUsername(username)

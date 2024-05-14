@@ -9,6 +9,7 @@ import lombok.Data;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ReqResponse {
 
+    // ver el tema de manejar tudo con un mismo DTO o NO
     private String username;
     private String password;
     private String email;
@@ -23,6 +24,5 @@ public class ReqResponse {
     private int statusCode;
     private String token;
     private String expirationTime;
-    private String error;
 
 }

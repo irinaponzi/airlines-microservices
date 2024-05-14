@@ -2,17 +2,15 @@ package com.codeki.authservice.Utils;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.Base64;
+import java.util.Date;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Component
 public class JwtUtils {
@@ -41,7 +39,7 @@ public class JwtUtils {
     }
 
     public boolean validateToken(String token, UserDetails userDetails) {
-        final String username = extractUserName(token);
+        String username = extractUserName(token);
         return (username.equals(userDetails.getUsername())&&!isTokenExpired(token));
     }
 

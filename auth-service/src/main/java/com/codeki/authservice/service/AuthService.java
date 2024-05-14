@@ -7,11 +7,15 @@ import com.codeki.authservice.model.User;
 import com.codeki.authservice.repository.CustomUserDetailsRepository;
 import com.codeki.authservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class AuthService {
@@ -27,80 +31,70 @@ public class AuthService {
     @Autowired
     AuthenticationManager authenticationManager;
 
-
     public ReqResponse singUp(ReqResponse registrationReq) {
-        ReqResponse response = new ReqResponse();
-
-        try {
+        Optional<CustomUserDetails> authUserOptional = customUserDetailsRepository.findByUsername(registrationReq.getUsername());
+        if(authUserOptional.isEmpty()) {
             CustomUserDetails authUser = new CustomUserDetails();
+
             authUser.setUsername(registrationReq.getUsername());
             authUser.setEmail(registrationReq.getEmail());
             authUser.setPassword(passwordEncoder.encode(registrationReq.getPassword()));
             authUser.setRole(registrationReq.getRole());
 
+            authUser.setUser(createUser(registrationReq));
             customUserDetailsRepository.save(authUser);
-            createUser(registrationReq);
 
+            ReqResponse response = new ReqResponse();
             response.setMessage("User has been registered successfully");
             response.setStatusCode(200);
+            return response;
 
-        // trabajar esta excepcion
-        } catch (Exception e) {
-            response.setStatusCode(500);
-            response.setError(e.getMessage());
-        }
-        return response;
-    }  // hacer que chequee que el nombre de usuario es único
-    // ver el tema de manejar tuto con un mismo DTO
+        } throw new DuplicateKeyException("Username already exists");
+    }
 
-    public ReqResponse login(ReqResponse loginReq) {
+    public ReqResponse logIn(ReqResponse loginReq) {
         ReqResponse response = new ReqResponse();
-
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginReq.getUsername(), loginReq.getPassword()));
-            CustomUserDetails authUser = customUserDetailsRepository.findByUsername(loginReq.getUsername())
-                    .orElseThrow(() -> new UsernameNotFoundException("Username not found")); // ver esta excepcion
+            Optional<CustomUserDetails> authUser = customUserDetailsRepository.findByUsername(loginReq.getUsername());
 
-            String TokenJwt = jwtUtils.generateToken(authUser);
-
-            response.setToken(TokenJwt);
-            response.setStatusCode(200);
-            response.setExpirationTime("1 Hr");
-            response.setMessage("Successfully Log in");
-
-        // trabajar esta excepcion
-        } catch (Exception e) {
-            response.setStatusCode(500);
-            response.setError(e.getMessage());
+            if (authUser.isPresent()) {
+                String TokenJwt = jwtUtils.generateToken(authUser.get());
+                response.setToken(TokenJwt);
+                response.setStatusCode(200);
+                response.setExpirationTime("1 Hr");
+                response.setMessage("Successfully Log in");
+                return response;
+            }
+        } catch (AuthenticationException e) {
+            response.setMessage("Unauthorized: Invalid username or password");
+            response.setStatusCode(401);
         }
         return response;
     }
 
     public ReqResponse validateToken(String token) {
         ReqResponse response = new ReqResponse();
-
         try {
             String userName = jwtUtils.extractUserName(token);
             CustomUserDetails authUser = customUserDetailsRepository.findByUsername(userName)
-                    .orElseThrow(() -> new UsernameNotFoundException("Username not found")); // ver esta excepcion
+                    .orElseThrow(() -> new UsernameNotFoundException("Unauthorized: Token is not valid"));
 
             if (jwtUtils.validateToken(token, authUser)) {
                 response.setStatusCode(200);
                 response.setMessage("Token is valid");
             } else {
-                response.setStatusCode(401); // Unauthorized
-                response.setMessage("Token is not valid");
+                response.setStatusCode(401);
+                response.setMessage("Unauthorized: Token is not valid");
             }
-
-        // trabajar esta excepcion
         } catch (Exception e) {
-            response.setStatusCode(500);
-            response.setError(e.getMessage());
+            response.setStatusCode(401);
+            response.setMessage(e.getMessage());
         }
         return response;
     }
 
-    private User createUser(ReqResponse registrationReq){
+    private User createUser(ReqResponse registrationReq) {
         User user = new User();
         user.setName(registrationReq.getName());
         user.setLastName(registrationReq.getLastName());
@@ -110,5 +104,11 @@ public class AuthService {
         return userRepository.save(user);
     }
 
-    // Falta Log out.
+    // --- LO QUE FALTA ---
+    // Log out register
+    // Update registrer
+    // Delete register
+    // User el delete lo saco?
+
+
 }

@@ -27,20 +27,18 @@ public class AuthFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
-        String jwtToken, username;
+        String jwtToken, userName;
         String authHeader = request.getHeader("Authorization");
 
         if (authHeader == null || authHeader.isBlank()) {
             filterChain.doFilter(request, response);
             return;
         }
-
         jwtToken = authHeader.substring(7);
-        username = jwtUtils.extractUserName(jwtToken);
+        userName = jwtUtils.extractUserName(jwtToken);
 
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
+        if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            UserDetails userDetails = customUserDetailsService.loadUserByUsername(userName);
 
             if (jwtUtils.validateToken(jwtToken, userDetails)) {
                 SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
@@ -51,7 +49,6 @@ public class AuthFilter extends OncePerRequestFilter {
                 securityContext.setAuthentication(token);
                 SecurityContextHolder.setContext(securityContext);
             }
-
             filterChain.doFilter(request, response);
         }
     }

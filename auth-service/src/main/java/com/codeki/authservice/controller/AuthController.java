@@ -21,7 +21,7 @@ public class AuthController {
 
     @PostMapping("/log-in")
     public ResponseEntity<ReqResponse> logIn(@RequestBody ReqResponse logInReq) {
-        return new ResponseEntity<>(authService.login(logInReq), HttpStatus.OK);
+        return new ResponseEntity<>(authService.logIn(logInReq), HttpStatus.OK);
     }
 
     @PostMapping("/validate-token")
