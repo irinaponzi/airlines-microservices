@@ -13,6 +13,5 @@ public class ReqResponse {
     private int statusCode;
     private String token;
     private String expirationTime;
-    private String error;
 
 }

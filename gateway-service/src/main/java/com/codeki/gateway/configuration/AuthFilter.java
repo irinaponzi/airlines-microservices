@@ -30,6 +30,7 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
 
             String authHeader = exchange.getRequest().getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
             String [] chunks = authHeader.split(" ");
+
             if (chunks.length != 2 || !chunks[0].equals("Bearer")) {
                 return onError(exchange, HttpStatus.UNAUTHORIZED);
             }
@@ -37,14 +38,20 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
             return WEB_CLIENT.build()
                     .post()
                     .uri("http://auth-service/auth/validate-token?validateTokenReq=" + chunks[1])
-                    .retrieve().bodyToMono(ReqResponse.class)
-                    .map(reqResponse -> {
-                        exchange.getRequest()
-                                .mutate()
-                                .header("x-auth-token", String.valueOf(reqResponse.getToken()))
-                                .header("x-auth-user-name", String.valueOf(reqResponse.getUsername()));
-                        return exchange;
-                        }).flatMap(chain::filter);
+                    .retrieve()
+                    .bodyToMono(ReqResponse.class)
+                    .flatMap(reqResponse -> {
+                        if (reqResponse.getStatusCode() == 200) {
+                            exchange.getRequest()
+                                    .mutate()
+                                    .header("x-auth-token", String.valueOf(reqResponse.getToken()))
+                                    .header("x-auth-user-name", String.valueOf(reqResponse.getUsername()));
+                            return chain.filter(exchange);
+                        } else {
+                            exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+                            return exchange.getResponse().setComplete();
+                        }
+                    });
         }));
     }
 
