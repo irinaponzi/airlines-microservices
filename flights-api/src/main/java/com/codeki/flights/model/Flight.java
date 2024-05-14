@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Entity
 public class Flight {
 
-    @Id
+    @Id // TICKET
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String origin;
@@ -25,7 +25,7 @@ public class Flight {
     private Double price;
     private String frequency;
     @ManyToOne
-    @JoinColumn(name= "company_id")
+    @JoinColumn(name= "company_id") // USUARIO
     Company company;
 
     // Constructor sin ID
