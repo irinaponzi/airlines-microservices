@@ -1,6 +1,7 @@
 package com.codeki.gateway.configuration;
 
 import com.codeki.gateway.dto.ReqResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.http.HttpHeaders;
@@ -13,6 +14,9 @@ import reactor.core.publisher.Mono;
 
 @Component
 public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> {
+
+    @Value("${validate.token-url}")
+    private String VALIDATE_TOKEN_URL;
 
     private final WebClient.Builder WEB_CLIENT;
 
@@ -37,7 +41,7 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
 
             return WEB_CLIENT.build()
                     .post()
-                    .uri("http://auth-service/auth/validate-token?validateTokenReq=" + chunks[1])
+                    .uri(VALIDATE_TOKEN_URL + chunks[1])
                     .retrieve()
                     .bodyToMono(ReqResponse.class)
                     .flatMap(reqResponse -> {
