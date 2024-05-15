@@ -30,22 +30,18 @@ public class Utils {
         return restTemplate.getForObject(URL_DOLLAR_CARD, Dollar.class);
     }
 
-    // Mapper de Flight a FlightDto
     public FlightDto flightMapper(Flight flight, Double dollar) {
         return new FlightDto(flight.getId(),flight.getOrigin(), flight.getDestiny(), flight.getDepartureTime(),
                 flight.getArrivingTime(), flight.getPrice() * dollar, flight.getFrequency(), flight.getCompany());
     }
 
-    // Mapper para listas: recibe una lista de Flight y devuelve una lista de FlightDto. Mapea llamando al método flightMapper
     public List<FlightDto> flightsListMapper(List<Flight> flightsList, Double dollar) {
         return flightsList.stream()
                 .map(flight -> flightMapper(flight, dollar))
                 .collect(Collectors.toList());
     }
 
-    // Busca vuelos con precios iguales o menores al offerPrice pasado por parámetro
     public List<Flight> detectOffers(List<Flight> flights, Double offerPrice) {
-        // Se filtra y el resultado se ordena de menor a mayor precio
         return flights.stream()
                 .filter(flightDto -> flightDto.getPrice() <= offerPrice)
                 .sorted(Comparator.comparing(Flight::getPrice))

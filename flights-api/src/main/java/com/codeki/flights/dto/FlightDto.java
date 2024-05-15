@@ -24,7 +24,6 @@ public class FlightDto {
     private String frequency;
     private Company company;
 
-    // Constructor sin ID
     public FlightDto(String origin, String destiny, LocalDateTime departureTime, LocalDateTime arrivingTime, Double convertedPrice, String frequency, Company company) {
         this.origin = origin;
         this.destiny = destiny;

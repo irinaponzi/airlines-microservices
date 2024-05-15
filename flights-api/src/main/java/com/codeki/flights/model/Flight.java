@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Entity
 public class Flight {
 
-    @Id // TICKET
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String origin;
@@ -25,10 +25,9 @@ public class Flight {
     private Double price;
     private String frequency;
     @ManyToOne
-    @JoinColumn(name= "company_id") // USUARIO
+    @JoinColumn(name= "company_id")
     Company company;
 
-    // Constructor sin ID
     public Flight(String origin, String destiny, LocalDateTime departureTime, LocalDateTime arrivingTime, Double price, String frequency, Company company) {
         this.origin = origin;
         this.destiny = destiny;
