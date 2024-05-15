@@ -34,11 +34,11 @@ Los microservicios utilizan MySQL como sistema de gestión de bases de datos. Se
 ```
 
 ## Documentación en Swagger
-[Documentación Auth Service](https://raw.githubusercontent.com/irinaponzi/airlines-microservices/main/auth-service/src/main/resources/swagger.yml)
+[Documentación Auth Service](https://petstore.swagger.io/?url=https://raw.githubusercontent.com/irinaponzi/airlines-microservices/main/auth-service/src/main/resources/swagger.yml)
 
-[Documentación Flights API](https://raw.githubusercontent.com/irinaponzi/airlines-microservices/main/flights-api/src/main/resources/swagger.yml)
+[Documentación Flights API](https://petstore.swagger.io/?url=https://raw.githubusercontent.com/irinaponzi/airlines-microservices/main/flights-api/src/main/resources/swagger.yml)
 
-[Documentación Tickets API](https://raw.githubusercontent.com/irinaponzi/airlines-microservices/main/tickets-api/src/main/resources/swagger.yml)
+[Documentación Tickets API](https://petstore.swagger.io/?url=https://raw.githubusercontent.com/irinaponzi/airlines-microservices/main/tickets-api/src/main/resources/swagger.yml)
 
 
 
