@@ -1,4 +1,4 @@
-package com.codeki.tickets.Utils;
+package com.codeki.tickets.utils;
 
 import com.codeki.tickets.dto.FlightDto;
 import com.codeki.tickets.dto.UserDto;
@@ -8,7 +8,6 @@ import com.codeki.tickets.service.UserFeignClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

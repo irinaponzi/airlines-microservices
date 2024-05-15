@@ -1,10 +1,10 @@
 package com.codeki.tickets.service;
 
-import com.codeki.tickets.Utils.Utils;
 import com.codeki.tickets.dto.ResponseDto;
 import com.codeki.tickets.exceptions.NotFoundException;
 import com.codeki.tickets.models.Ticket;
 import com.codeki.tickets.repository.TicketRepository;
+import com.codeki.tickets.utils.Utils;
 import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -59,7 +59,7 @@ public class TicketService {
             newTicket.setIdUser(idUser);
             return ticketRepository.save(newTicket);
 
-        } catch (FeignException.NotFound exception) {
+        } catch (FeignException e) {
             throw new NotFoundException("Unable to create: Flight or User not found");
         }
     }
@@ -72,5 +72,4 @@ public class TicketService {
         }
         throw new NotFoundException("Unable to delete: Ticket not found");
     }
-
 }
