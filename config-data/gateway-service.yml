@@ -42,6 +42,13 @@ spring:
           filters:
             - AuthFilter
 
+jwt:
+  uri:
+    validate-token: ${VALIDATE_TOKEN_URL:http://auth-service/auth/validate-token?validateTokenReq=}
+
+
+
+
 
 
 

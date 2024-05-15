@@ -1,4 +1,4 @@
-package com.codeki.authservice.Utils;
+package com.codeki.authservice.utils;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
