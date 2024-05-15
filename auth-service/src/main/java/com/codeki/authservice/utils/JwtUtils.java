@@ -15,14 +15,13 @@ import java.util.function.Function;
 @Component
 public class JwtUtils {
 
-    // ver de ponerla con un Value (el string)
-    private SecretKey secretKey;
+    private final SecretKey SECRET_KEY;
     private static final long EXPIRATION_TIME = 3600000;
 
     public JwtUtils() {
-        String secretKeyString = "1234909983kJHDFKJKLDJFLDKJFA34343NLNLNKNLNyy";
-        byte[] keyBytes = Base64.getDecoder().decode(secretKeyString.getBytes(StandardCharsets.UTF_8));
-        this.secretKey = new SecretKeySpec(keyBytes, "HmacSHA256");
+        String keyString = "1EH234WG1TFG983kJHD678JKL32DJ1FA38643NLN54NLNyy";
+        byte[] keyBytes = Base64.getDecoder().decode(keyString.getBytes(StandardCharsets.UTF_8));
+        this.SECRET_KEY = new SecretKeySpec(keyBytes, "HmacSHA256");
     }
 
     public String generateToken(UserDetails userDetails) {
@@ -30,7 +29,7 @@ public class JwtUtils {
                 .subject(userDetails.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(secretKey)
+                .signWith(SECRET_KEY)
                 .compact();
     }
 
@@ -48,7 +47,6 @@ public class JwtUtils {
     }
 
     private <T> T extractClaims(String token, Function<Claims, T> claimsFunction) {
-        return claimsFunction.apply(Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload());
+        return claimsFunction.apply(Jwts.parser().verifyWith(SECRET_KEY).build().parseSignedClaims(token).getPayload());
     }
-
 }

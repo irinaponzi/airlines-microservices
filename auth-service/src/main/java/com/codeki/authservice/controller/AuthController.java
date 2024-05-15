@@ -28,4 +28,14 @@ public class AuthController {
     public ResponseEntity<ReqResponse> validateToken(@RequestParam String validateTokenReq) {
         return new ResponseEntity<>(authService.validateToken(validateTokenReq), HttpStatus.OK);
     }
+
+    @PutMapping("/update-account/{username}")
+    public ResponseEntity<ReqResponse> updateAccount(@PathVariable String username, @RequestBody ReqResponse updateReq) {
+        return new ResponseEntity<>(authService.updateAccount(username, updateReq), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/delete-account/{username}")
+    public ResponseEntity<ReqResponse> deleteAccount(@PathVariable String username) {
+        return new ResponseEntity<>(authService.deleteAccount(username), HttpStatus.OK);
+    }
 }

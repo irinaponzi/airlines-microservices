@@ -22,7 +22,6 @@ public class User {
     private String passport;
     private String dni;
 
-    // Constructor sin ID
     public User(String name, String lastName, String passport, String dni) {
         this.name = name;
         this.lastName = lastName;

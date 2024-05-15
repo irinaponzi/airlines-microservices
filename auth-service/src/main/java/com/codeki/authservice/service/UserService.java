@@ -44,6 +44,16 @@ public class UserService {
         throw new NotFoundException("No results found");
     }
 
+    protected User createUser(ReqResponse registrationReq) {
+        User user = new User();
+        user.setName(registrationReq.getName());
+        user.setLastName(registrationReq.getLastName());
+        user.setPassport(registrationReq.getPassport());
+        user.setDni(registrationReq.getDni());
+
+        return userRepository.save(user);
+    }
+
     public User update(Long id, User user) {
         Optional<User> userOptional = userRepository.findById(id);
         if (userOptional.isPresent()) {
@@ -53,14 +63,12 @@ public class UserService {
         throw new NotFoundException("Unable to update: User not found");
     }
 
-    public ReqResponse deleteById(Long id) {
+    protected void deleteById(Long id) {
         Optional<User> userOptional = userRepository.findById(id);
         if (userOptional.isPresent()) {
             userRepository.deleteById(id);
-            ReqResponse reqResponse = new ReqResponse();
-            reqResponse.setMessage("The user " + id + " has been deleted");
-            return reqResponse;
         }
         throw new NotFoundException("Unable to delete: User not found");
     }
+
 }

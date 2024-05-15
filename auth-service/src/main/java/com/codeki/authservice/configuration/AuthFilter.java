@@ -1,6 +1,6 @@
 package com.codeki.authservice.configuration;
 
-import com.codeki.authservice.Utils.JwtUtils;
+import com.codeki.authservice.utils.JwtUtils;
 import com.codeki.authservice.service.CustomUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

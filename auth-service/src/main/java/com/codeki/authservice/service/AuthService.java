@@ -1,11 +1,10 @@
 package com.codeki.authservice.service;
 
-import com.codeki.authservice.Utils.JwtUtils;
 import com.codeki.authservice.dto.ReqResponse;
+import com.codeki.authservice.exceptions.NotFoundException;
 import com.codeki.authservice.model.CustomUserDetails;
-import com.codeki.authservice.model.User;
 import com.codeki.authservice.repository.CustomUserDetailsRepository;
-import com.codeki.authservice.repository.UserRepository;
+import com.codeki.authservice.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,7 +22,7 @@ public class AuthService {
     @Autowired
     CustomUserDetailsRepository customUserDetailsRepository;
     @Autowired
-    UserRepository userRepository;
+    UserService userService;
     @Autowired
     JwtUtils jwtUtils;
     @Autowired
@@ -41,7 +40,7 @@ public class AuthService {
             authUser.setPassword(passwordEncoder.encode(registrationReq.getPassword()));
             authUser.setRole(registrationReq.getRole());
 
-            authUser.setUser(createUser(registrationReq));
+            authUser.setUser(userService.createUser(registrationReq));
             customUserDetailsRepository.save(authUser);
 
             ReqResponse response = new ReqResponse();
@@ -94,21 +93,46 @@ public class AuthService {
         return response;
     }
 
-    private User createUser(ReqResponse registrationReq) {
-        User user = new User();
-        user.setName(registrationReq.getName());
-        user.setLastName(registrationReq.getLastName());
-        user.setPassport(registrationReq.getPassport());
-        user.setDni(registrationReq.getDni());
+    // Actualiza contraseña y mail. NO el username, ya que funciona como un identificador único.
+    public ReqResponse updateAccount(String username, ReqResponse updateReq) {
+        Optional<CustomUserDetails> authUserOptional = customUserDetailsRepository.findByUsername(username);
+        if(authUserOptional.isPresent()) {
+            CustomUserDetails authUser = authUserOptional.get();
+            authUser.setEmail(updateReq.getEmail());
+            authUser.setPassword(updateReq.getPassword());
+            customUserDetailsRepository.save(authUser);
 
-        return userRepository.save(user);
+            ReqResponse response = new ReqResponse();
+            response.setMessage("User account has been successfully updated");
+            response.setStatusCode(200);
+            return response;
+        }
+        throw new NotFoundException("Unable to update: User account not found");
     }
 
+    // Al eliminarse la cuenta se elimina también el usuario asociado a ella.
+    public ReqResponse deleteAccount(String username) {
+        Optional<CustomUserDetails> authUserOptional = customUserDetailsRepository.findByUsername(username);
+        if(authUserOptional.isPresent()) {
+            CustomUserDetails authToDelete = authUserOptional.get();
+            userService.deleteById(authToDelete.getUser().getId());
+            customUserDetailsRepository.deleteById(authToDelete.getId());
+
+            ReqResponse response = new ReqResponse();
+            response.setMessage("User account has been successfully deleted");
+            response.setStatusCode(200);
+            return response;
+        }
+        throw new NotFoundException("Unable to delete: User account not found");
+    }
+
+
+
     // --- LO QUE FALTA ---
-    // Log out register
-    // Update registrer
-    // Delete register
-    // User el delete lo saco?
+    // El DTO ver?
+    // Volver a probar bien tudo -- en especial últimos métodos creados
+    // Documentación (ReadMe - Comentarios código)
+
 
 
 }
