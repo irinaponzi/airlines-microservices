@@ -98,8 +98,8 @@ public class AuthService {
         Optional<CustomUserDetails> authUserOptional = customUserDetailsRepository.findByUsername(username);
         if(authUserOptional.isPresent()) {
             CustomUserDetails authUser = authUserOptional.get();
+            authUser.setPassword(passwordEncoder.encode(updateReq.getPassword()));
             authUser.setEmail(updateReq.getEmail());
-            authUser.setPassword(updateReq.getPassword());
             customUserDetailsRepository.save(authUser);
 
             ReqResponse response = new ReqResponse();
@@ -115,7 +115,6 @@ public class AuthService {
         Optional<CustomUserDetails> authUserOptional = customUserDetailsRepository.findByUsername(username);
         if(authUserOptional.isPresent()) {
             CustomUserDetails authToDelete = authUserOptional.get();
-            userService.deleteById(authToDelete.getUser().getId());
             customUserDetailsRepository.deleteById(authToDelete.getId());
 
             ReqResponse response = new ReqResponse();
@@ -127,10 +126,8 @@ public class AuthService {
     }
 
 
-
     // --- LO QUE FALTA ---
-    // El DTO ver?
-    // Volver a probar bien tudo -- en especial últimos métodos creados
+    // Volver a probar bien tudo
     // Documentación (ReadMe - Comentarios código)
 
 

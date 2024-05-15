@@ -29,8 +29,8 @@ public class AuthController {
         return new ResponseEntity<>(authService.validateToken(validateTokenReq), HttpStatus.OK);
     }
 
-    @PutMapping("/update-account/{username}")
-    public ResponseEntity<ReqResponse> updateAccount(@PathVariable String username, @RequestBody ReqResponse updateReq) {
+    @PutMapping("/update-account")
+    public ResponseEntity<ReqResponse> updateAccount(@RequestParam String username, @RequestBody ReqResponse updateReq) {
         return new ResponseEntity<>(authService.updateAccount(username, updateReq), HttpStatus.OK);
     }
 
