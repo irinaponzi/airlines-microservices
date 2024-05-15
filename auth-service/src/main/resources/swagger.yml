@@ -1,0 +1,245 @@
+# Se incluye este .yaml para poder acceder a la documentación en Swagger que se encuentra en el README.md mediante un enlace
+openapi: 3.0.1
+info:
+  title: Auth Service
+  version: v0
+servers:
+  - url: http://localhost:8080
+    description: Generated server url
+paths:
+  /users/update/{id}:
+    put:
+      tags:
+        - user-controller
+      operationId: updateUser
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/User'
+  /auth/update-account:
+    put:
+      tags:
+        - auth-controller
+      operationId: updateAccount
+      parameters:
+        - name: username
+          in: query
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReqResponse'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ReqResponse'
+  /auth/validate-token:
+    post:
+      tags:
+        - auth-controller
+      operationId: validateToken
+      parameters:
+        - name: validateTokenReq
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ReqResponse'
+  /auth/sign-up:
+    post:
+      tags:
+        - auth-controller
+      operationId: signUp
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReqResponse'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ReqResponse'
+  /auth/log-in:
+    post:
+      tags:
+        - auth-controller
+      operationId: logIn
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReqResponse'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ReqResponse'
+  /users:
+    get:
+      tags:
+        - user-controller
+      operationId: getAllUsers
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+  /users/{id}:
+    get:
+      tags:
+        - user-controller
+      operationId: getUserById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/User'
+  /users/passport:
+    get:
+      tags:
+        - user-controller
+      operationId: getUserByPassport
+      parameters:
+        - name: passport
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/User'
+  /users/lastname:
+    get:
+      tags:
+        - user-controller
+      operationId: getUserByLastName
+      parameters:
+        - name: lastname
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+  /auth/delete-account/{username}:
+    delete:
+      tags:
+        - auth-controller
+      operationId: deleteAccount
+      parameters:
+        - name: username
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ReqResponse'
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        lastName:
+          type: string
+        passport:
+          type: string
+        dni:
+          type: string
+    ReqResponse:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+        email:
+          type: string
+        role:
+          type: string
+        name:
+          type: string
+        lastName:
+          type: string
+        passport:
+          type: string
+        dni:
+          type: string
+        message:
+          type: string
+        statusCode:
+          type: integer
+          format: int32
+        token:
+          type: string
+        expirationTime:
+          type: string
