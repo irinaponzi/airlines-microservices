@@ -1,0 +1,133 @@
+# Se incluye este .yaml para poder acceder a la documentación en Swagger que se encuentra en el README.md mediante un enlace
+openapi: 3.0.1
+info:
+  title: Tickets API
+  version: v0
+servers:
+  - url: http://localhost:8080
+    description: Generated server url
+paths:
+  /tickets/add:
+    post:
+      tags:
+        - ticket-controller
+      operationId: addTicket
+      parameters:
+        - name: idUser
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: idFlight
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Ticket'
+  /tickets:
+    get:
+      tags:
+        - ticket-controller
+      operationId: getAllTickets
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties:
+                    type: object
+  /tickets/id-user:
+    get:
+      tags:
+        - ticket-controller
+      operationId: getTicketByIdUser
+      parameters:
+        - name: idUser
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ticket'
+  /tickets/id-flight:
+    get:
+      tags:
+        - ticket-controller
+      operationId: getTicketByIdFlight
+      parameters:
+        - name: idFlight
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ticket'
+  /tickets/delete/{id}:
+    delete:
+      tags:
+        - ticket-controller
+      operationId: deleteTicket
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseDto'
+components:
+  schemas:
+    Ticket:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        purchaseDate:
+          type: string
+          format: date-time
+        idUser:
+          type: integer
+          format: int64
+        idFlight:
+          type: integer
+          format: int64
+    ResponseDto:
+      type: object
+      properties:
+        message:
+          type: string
