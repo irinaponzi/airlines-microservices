@@ -25,5 +25,3 @@ eureka:
 
 dollar:
   card-url: ${DOLLAR_API_URL:https://dolarapi.com/v1/dolares/tarjeta}
-jwt:
-  secret-key: ${KEY:1234909983kJHDFKJKLDJFLDKJFA34343NLNLNKNLNyy}
