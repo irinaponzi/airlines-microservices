@@ -43,7 +43,7 @@ spring:
             - AuthFilter
 
 validate:
-  token: ${VALIDATE_TOKEN_URL:http://auth-service/auth/validate-token?validateTokenReq=}
+  token-url: ${VALIDATE_TOKEN_URL:http://auth-service/auth/validate-token?validateTokenReq=}
 
 
 
