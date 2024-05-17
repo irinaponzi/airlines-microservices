@@ -30,11 +30,13 @@ public class Utils {
         return restTemplate.getForObject(URL_DOLLAR_CARD, Dollar.class);
     }
 
+    // Mapper de Flight a FlightDto
     public FlightDto flightMapper(Flight flight, Double dollar) {
         return new FlightDto(flight.getId(),flight.getOrigin(), flight.getDestiny(), flight.getDepartureTime(),
                 flight.getArrivingTime(), flight.getPrice() * dollar, flight.getFrequency(), flight.getCompany());
     }
 
+    // Mapper de List<Flight> a List<FlightDto>
     public List<FlightDto> flightsListMapper(List<Flight> flightsList, Double dollar) {
         return flightsList.stream()
                 .map(flight -> flightMapper(flight, dollar))

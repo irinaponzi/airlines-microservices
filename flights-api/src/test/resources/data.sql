@@ -1,3 +1,6 @@
+-- Script para la base H2
+-- Inserta datos en las tablas `company` y `flight`
+
 INSERT INTO `company`
 (`name`, `page`, `banner`)
 VALUES
