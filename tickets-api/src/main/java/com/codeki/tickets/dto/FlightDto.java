@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @Setter
 public class FlightDto {
 
+    // Dto para el FeignClient
     private Long id;
     private String origin;
     private String destiny;

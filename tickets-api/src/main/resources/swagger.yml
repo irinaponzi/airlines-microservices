@@ -1,4 +1,4 @@
-# Se incluye este .yaml para poder acceder a la documentación en Swagger que se encuentra en el README.md mediante un enlace
+# Se incluye este .yml para poder acceder a la documentación en Swagger que se encuentra en el README.md mediante un enlace
 openapi: 3.0.1
 info:
   title: Tickets API

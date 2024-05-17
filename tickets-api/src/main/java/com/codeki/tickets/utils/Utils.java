@@ -21,6 +21,7 @@ public class Utils {
     @Autowired
     UserFeignClient userFeignClient;
 
+    // Retorna un Map con la información completa del ticket ingresado por parámetro, incluyendo todos los datos del vuelo y usuario asociados
     public Map<String, Object> getCompleteTicket(Ticket ticket) {
         FlightDto flightDto = flightFeignClient.getFlightById(ticket.getIdFlight()).getBody();
         UserDto userDto = userFeignClient.getUserById(ticket.getIdUser()).getBody();
@@ -33,6 +34,7 @@ public class Utils {
         return completeTicket;
     }
 
+    // Retorna una lista de Map con la información completa de los tickets de la lista ingresada por parámetro
     public List<Map<String, Object>> getCompleteTicketList(List<Ticket> tickets) {
         return tickets.stream()
                 .map(this::getCompleteTicket)

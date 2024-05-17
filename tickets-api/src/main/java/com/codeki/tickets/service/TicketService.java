@@ -48,6 +48,7 @@ public class TicketService {
 
     public Ticket createTicket(Long idUser, Long idFlight) {
         try {
+            //Solo se llama a los métodos, porque en caso de no encontrar el vuelo y/o usuario se lanzará la excepción
             flightFeignClient.getFlightById(idFlight);
             userFeignClient.getUserById(idUser);
 

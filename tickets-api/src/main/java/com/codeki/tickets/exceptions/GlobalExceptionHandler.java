@@ -9,8 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    // Controller Advice para tratar las excepciones
-    // NotFoundExcepcion: recurso buscado no se encuentra
+    // NotFoundException: recurso buscado no se encuentra
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<ResponseDto> handleNotFoundException(NotFoundException e) {
         ResponseDto responseDto = new ResponseDto(e.getMessage());

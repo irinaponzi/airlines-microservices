@@ -11,6 +11,7 @@ import lombok.Setter;
 @Setter
 public class UserDto {
 
+    // Dto para el FeignClient
     private Long id;
     private String name;
     private String lastName;
