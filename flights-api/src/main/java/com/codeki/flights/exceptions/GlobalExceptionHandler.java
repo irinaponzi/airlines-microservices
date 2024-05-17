@@ -10,7 +10,7 @@ import org.springframework.web.client.RestClientException;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    // NotFoundExcepcion: recurso buscado no se encuentra
+    // NotFoundException: recurso buscado no se encuentra
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<ResponseDto> handleNotFoundException(NotFoundException e) {
         ResponseDto responseDto = new ResponseDto(e.getMessage());
