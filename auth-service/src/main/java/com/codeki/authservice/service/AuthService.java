@@ -72,6 +72,7 @@ public class AuthService {
         return response;
     }
 
+    // Este método es utilizado por el AuthFilter del Gateway, que llama al endpoint 'validate-token' para la validación del mismo
     public ReqResponse validateToken(String token) {
         ReqResponse response = new ReqResponse();
         try {
@@ -110,7 +111,7 @@ public class AuthService {
         throw new NotFoundException("Unable to update: User account not found");
     }
 
-    // Al eliminarse la cuenta se elimina también el usuario asociado a ella.
+    // Al eliminarse la cuenta automáticamente se elimina también el usuario asociado a ella.
     public ReqResponse deleteAccount(String username) {
         Optional<CustomUserDetails> authUserOptional = customUserDetailsRepository.findByUsername(username);
         if(authUserOptional.isPresent()) {
@@ -124,12 +125,5 @@ public class AuthService {
         }
         throw new NotFoundException("Unable to delete: User account not found");
     }
-
-
-    // --- LO QUE FALTA ---
-    // Volver a probar bien tudo
-    // Documentación (ReadMe - Comentarios código)
-
-
 
 }

@@ -21,10 +21,13 @@ public class CustomUserDetails implements UserDetails {
     private String password;
     private String email;
     private String role;
+
+    // Se utiliza cascade para que la persistencia de User dependa de esta clase.
     @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE })
     @JoinColumn(name= "user_id", nullable = false)
     User user;
 
+    // Implementación de los métodos de la interfaz UserDetails
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role));

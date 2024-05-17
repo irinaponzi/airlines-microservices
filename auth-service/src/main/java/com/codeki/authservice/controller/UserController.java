@@ -1,6 +1,5 @@
 package com.codeki.authservice.controller;
 
-import com.codeki.authservice.dto.ReqResponse;
 import com.codeki.authservice.model.User;
 import com.codeki.authservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,5 +40,4 @@ public class UserController {
     public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
         return new ResponseEntity<>(userService.update(id, user), HttpStatus.OK);
     }
-
 }

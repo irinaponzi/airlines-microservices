@@ -44,6 +44,7 @@ public class UserService {
         throw new NotFoundException("No results found");
     }
 
+    // Este método es utilizado por el AuthService para la creación de un User durante el registro
     protected User createUser(ReqResponse registrationReq) {
         User user = new User();
         user.setName(registrationReq.getName());
@@ -61,14 +62,6 @@ public class UserService {
             return userRepository.save(user);
         }
         throw new NotFoundException("Unable to update: User not found");
-    }
-
-    protected void deleteById(Long id) {
-        Optional<User> userOptional = userRepository.findById(id);
-        if (userOptional.isPresent()) {
-            userRepository.deleteById(id);
-        }
-        throw new NotFoundException("Unable to delete: User not found");
     }
 
 }
